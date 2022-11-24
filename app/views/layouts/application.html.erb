@@ -10,9 +10,10 @@
   </head>
   <body>
     <%= render 'layouts/header' %>
-      <main>
-        <p id="notice"><%= notice %></p>
-      </main>
+     <div>
+    <%= flash[:notice] %>
+    </div>
+  <%= yield %>
     <%= render 'layouts/footer' %>
   </body>
 </html>
