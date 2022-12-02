@@ -1,13 +1,7 @@
-
-<table class = "table table-hover table-inverse">
-  <% if @range == "User" %>
-    <%= render 'user' , users: @users %>
-
-  <% else %>
-    <%= render 'book' , books: @books, user: @user %>
-
-  <% end %>
-</table>
-
-
-
+<% if @model == 'user' %>
+	<h3>Users search for "<%= @content %>"</h3>
+  <%= render 'users/index', users: @records %>
+<% elsif @model == 'book' %>
+	<h3>Books search for "<%= @content %>"</h3>
+  <%= render 'books/index', books: @records %>
+<% end %>
