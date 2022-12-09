@@ -1,27 +1,35 @@
 class GroupsController < ApplicationController
 
   def index
+    @book = Book.new
     @groups= Group.all
-    @group_joining = GroupUser.where(user_id: current_user.id)
-    @group_none = "グループに参加していません"
   end
 
   def new
     @group = Group.new
-    @group.users << current_user
   end
 
   def create
     @group = Group.new(group_params)
+    @group.owner_id = current_user.id
+    @group.users << current_user
     if @group.save
-      redirect_to groups_url, notice: 'グループを作成しました'
+      redirect_to groups_path, notice: 'グループを作成しました'
     else
       render :new
     end
   end
 
   def show
+    @book = Book.new
+    @user = current_user
     @group = Group.find(params[:id])
+  end
+
+  def join
+    @group = Group.find(params[:group_id])
+    @group.users << current_user
+    redirect_to groups_path
   end
 
   def edit
@@ -36,24 +44,42 @@ class GroupsController < ApplicationController
       render :edit
     end
   end
+  
+  def new_mail
+    @group = Group.find(params[:group_id])
+  end 
+  
+  def send_mail
+    @group = Group.find(params[:group_id])
+    group_users = @group.users
+    @mail_title = params[:mail_title]
+    @mail_content = params[:mail_content]
+    ContactMailer.send_mail(@mail_title,@mail_contant,group_users).deliver
+  end 
+  
 
   def destroy
     @group = Group.find(params[:id])
-    if @group.destroy(group_params)
-      redirect_to groups_path, notice: 'グループを削除しました'
-
-    end
+    @group.users.delete(current_user)
+    redirect_to groups_path, notice: 'グループを退会しました'
+  end
 
     private
-      def set_group
-        @group = Group.find(params(:id))
-      end
 
       def group_params
-        params.require(:group).permit(:name, user_ids:[])
-      end 
+        params.require(:group).permit(:name, :introduction, :group_image )
+      end
 
+      def ensure_current_user
+        @group = Group.find(params[:id])
+        unless @group.owner_id == current_user.id
+          redirect_to groups_path
+        end
+      end
 
+      def get_profile_image
+         (profile_image.attached?) ? profile_image : 'no_image.jpg'
+      end
 
 
 end

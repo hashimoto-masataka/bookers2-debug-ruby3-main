@@ -74,6 +74,9 @@ ActiveRecord::Schema.define(version: 2022_12_08_063424) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name", null: false
+    t.text "introduction"
+    t.string "image_id"
+    t.integer "owner_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_groups_on_name", unique: true

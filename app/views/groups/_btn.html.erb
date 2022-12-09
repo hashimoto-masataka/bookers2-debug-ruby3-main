@@ -1,0 +1,7 @@
+<% if group.users.include?(current_user) %>
+  <% if current_user.include?(user) %>
+    <%= link_to "Leave this group", group_path(group), method: :delete, class: "btn btn-info" %>
+  <% else %>
+    <%= link_to "Join this group", group_join_path(group), method: :post, class: "btn btn-success" %>
+  <% end %>
+ <% end %>
