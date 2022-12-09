@@ -1,5 +1,8 @@
 class GroupsController < ApplicationController
 
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, only: [:edit, :update]
+
   def index
     @book = Book.new
     @groups= Group.all
@@ -44,24 +47,31 @@ class GroupsController < ApplicationController
       render :edit
     end
   end
-  
+
   def new_mail
     @group = Group.find(params[:group_id])
-  end 
-  
+  end
+
   def send_mail
     @group = Group.find(params[:group_id])
     group_users = @group.users
     @mail_title = params[:mail_title]
     @mail_content = params[:mail_content]
-    ContactMailer.send_mail(@mail_title,@mail_contant,group_users).deliver
-  end 
-  
+    ContactMailer.send_mail(@mail_title,@mail_content,group_users).deliver
+  end
+
 
   def destroy
     @group = Group.find(params[:id])
     @group.users.delete(current_user)
     redirect_to groups_path, notice: 'グループを退会しました'
+  end
+
+  def all_destroy
+    @group = Group.find(params[:group_id])
+    if @group.destroy
+      redirect_to groups_path
+    end
   end
 
     private

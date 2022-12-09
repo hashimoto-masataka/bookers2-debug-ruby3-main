@@ -43,7 +43,12 @@
                   <%= link_to "Join this group", group_join_path(@group), class: "btn btn-success" %>
                 <% end %>
             </td>
+            <% if @group.owner_id == current_user.id %>
+            <td><%= link_to 'Notice an Event',group_new_mail_path(@group), class: "btn btn-success" %></td>
+            <td><%= link_to 'グループ削除',group_all_destroy_path(@group),method: :delete,dete: { confirm: '本当に削除しますか？' },class: "btn btn-sm btn-outline-danger" %> </td>
+             <% end %>
           </tr>
+
         </table>
 
     </div>

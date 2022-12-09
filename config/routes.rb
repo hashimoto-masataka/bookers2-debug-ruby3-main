@@ -19,6 +19,9 @@ Rails.application.routes.draw do
 
   resources :groups, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     get "join" => "groups#join"
+    delete "all_destroy" => 'groups#all_destroy'
+    get "new/mail" => "groups#new_mail"
+    get "send/mail" => "groups#send_mail"
   end
 
 

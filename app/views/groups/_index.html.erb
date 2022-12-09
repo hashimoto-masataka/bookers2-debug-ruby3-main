@@ -21,7 +21,15 @@
         </td>
         <td><%= group.introduction %></td>
         <td><%= group.users.count %></td>
-        <td><%= link_to 'Edit', edit_group_path(group), class: "btn btn-sm btn-success" %></td>
+         <td>
+          <% if group.owner_id == current_user.id %>
+            <%= link_to 'Edit', edit_group_path(group), class: "btn btn-sm btn-success" %>
+          <% elsif group.users.include?(current_user) %>
+            <%= link_to "Leave this group", group_path(group), method: :delete, class: "btn btn-info" %>
+          <% else %>
+            <%= link_to "Join this group", group_join_path(group), class: "btn btn-success" %>
+          <% end %>
+        </td>
 
       </tr>
     <% end %>

@@ -66,23 +66,24 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
-
+  config.hosts.clear
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
     config.action_mailer.raise_delivery_errors = true
     config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_setting = {
-      port: 587,
-      address: 'smtp.gmail.com',
-      domain: 'gmail.com',
-      user_name: 'masatakazy@gmail.com',
-      password: '19957422',
-      authentication: 'login',
-      enable_starttls_auto: true
+    config.action_mailer.smtp_settings = {
+      :user_name => ENV['KEY'],
+      :password => ENV['SECRET_KEY'],
+      :domain => "gmail.com",
+      :address => "smtp.gmail.com",
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
+
     }
   # config.hosts << "a8c9cb2b77b24968bf1f0967084f4a3f.vfs.cloud9.us-east-1.amazonaws.com"
-  config.hosts.clear
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end
