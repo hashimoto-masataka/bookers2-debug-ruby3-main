@@ -80,7 +80,7 @@ class GroupsController < ApplicationController
         params.require(:group).permit(:name, :introduction, :group_image )
       end
 
-      def ensure_current_user
+      def ensure_correct_user
         @group = Group.find(params[:id])
         unless @group.owner_id == current_user.id
           redirect_to groups_path
