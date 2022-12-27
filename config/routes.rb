@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     get 'followers' => 'relationships#followers', as: 'followers'
   end
 
+  resources :chats, only: [:create, :show]
+
   resources :groups, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     get "join" => "groups#join"
     delete "all_destroy" => 'groups#all_destroy'
